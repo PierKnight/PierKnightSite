@@ -2,16 +2,23 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Browser Menu</title>
+    <title>Hub</title>
+    <link rel="icon" type="image/png" href="https://cdn.discordapp.com/avatars/388238365163782155/d05300c84f1cc3bdb81a6eae8664347b.png?size=256" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://www.youtube.com/player_api"></script>
 </head>
 
-<!-- Commento -->
-<body>
+<body class="unselectable">
 
+
+<div class="hogTalk" id="playlist">
+    <img id="playlistIcon" src="media/playlist.png" width="40px">
+    <input id="playlistInput" type="text" title="" placeholder="playlistName:playlistID">
+    <div id="playlistEntries"></div>
+
+</div>
 
 <div id="hog_content">
     <div id="hogCharacter" class="hogTalk">
@@ -21,11 +28,6 @@
     <div id="player">Youtube Player</div>
 </div>
 
-
-<div class="hogTalk" id="playlist">
-    <img id="playlistIcon" src="media/playlist.png" width="40px">
-    <input type="text" id="playlistInput" name="fname">
-</div>
 
 <div id="clock">
     <img class="bulb" draggable="false" id="bulb_dot_second1">
@@ -39,11 +41,10 @@
 </div>
 
 
-
 <script src="hog_talk.js"></script>
 <script src="youtube.js"></script>
+<script src="playlist.js"></script>
 <script src="dixie_clock.js"></script>
-
 
 
 </body>

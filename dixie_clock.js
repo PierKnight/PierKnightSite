@@ -1,7 +1,6 @@
 let loopClockId = setInterval(updateClock,1,0)
 
 
-let body = document.getElementsByTagName("BODY")[0];
 let clock = document.getElementById("clock");
 
 clock.addEventListener("mouseup",resetClock);

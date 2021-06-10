@@ -9,6 +9,15 @@ body{
 
 }
 
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 #clock
 {
      position: fixed;
@@ -65,6 +74,7 @@ body{
 {
   position: relative;
   bottom: -10px;
+  transition: bottom 1s;
 }
 
 .hogHopping {
@@ -96,16 +106,29 @@ body{
 #playlist
 {
   position: fixed;
-  bottom: 5px;
-  top: 5px;
-  display: table;
-  --hog-message: "Clicca per poter ascoltare una playlist su youtube";
+  --hog-message: "Inserisci una playlist scrivendo nel formato playlistName:playlistID e dopo averlo selezionato dalla lista puoi cliccare l'icona per mettere in coda la playlist";
 }
 
 #playlistInput
 {
   border: 2px solid green;
 }
+
+#playlistEntries
+{
+  cursor: pointer;
+  color: white;
+  font-size: 2em;
+  max-height: 100px;
+  overflow: auto;
+
+}
+
+.selected
+{
+   background: black;
+}
+
 
 
 

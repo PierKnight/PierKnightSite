@@ -1,8 +1,10 @@
 
+let body = document.getElementsByTagName("BODY")[0];
+
 
 let player;
-
 let isPlayerReady = false;
+let isCuing = true;
 
 function onYouTubeIframeAPIReady() {
           player = new YT.Player('player', {
@@ -27,77 +29,55 @@ function onYouTubeIframeAPIReady() {
 
 function closeVideoPlayer()
 {
+
   player.setSize(0,0);
   player.stopVideo();
   hogImage.src = hogStyle.getPropertyValue("--normal-hog");
-   console.log("Stop");
+  hogCharacter.style.bottom = "-10px";
+  console.log("Stop");
 }
 
 
 function onPlayerReady(event) {
     isPlayerReady = true;
+    updatePlaylistEntries();
 }
 
 function onError(event) {
 
-  console.log(event.data)
-  //if(event.data == 150)
-  //     player.nextVideo();
+  console.log(event.data);
+  if(event.data == 150)
+      player.nextVideo();
 }
+
 
 function onPlayerStateChange(event) {
 
    if(event.data == YT.PlayerState.PLAYING)
    {
-      event.target.setSize(300,300);
+      event.target.setSize(300,200);
       hogImage.src = hogStyle.getPropertyValue("--music-hog");
+      hogCharacter.style.bottom = "-35px";
       event.target.setLoop(true);
+      event.target.setShuffle(true);
+      isCuing = false;
    }
-   else
+   else if(isCuing && event.data == YT.PlayerState.CUED)
    {
-
-
+       player.playVideo();
    }
 }
 
 
-
-const playlistInput = document.getElementById("playlistInput");
-const playlistIcon = document.getElementById("playlistIcon");
-
-playlistInput.addEventListener("keyup", ({key}) => {
-    if (key === "Enter") {
-        localStorage.playlistID = playlistInput.value;
-        playlistInput.value = "";
-        playlistInput.blur();
-    }
-})
-
-
-playlistIcon.addEventListener("click", () => {
-
-   if(isPlayerReady)
-   {
-   if(player.getPlayerState() != YT.PlayerState.PLAYING)
-   {
-       player.setShuffle({shufflePlaylist : true});
-       player.loadPlaylist({ listType: "playlist",list: localStorage.playlistID});
-       setTimeout(setShuffleFunction, 1000);
-       console.log("Start");
-   }
-   else
-   {
-       closeVideoPlayer()
-   }
-   }
-
-});
-
+function cuePlaylist(playlistID)
+{
+  player.cuePlaylist({ listType: "playlist",list: playlistID});
+  isCuing = true;
+}
 
 function setShuffleFunction(){
    player.setShuffle(true);
 }
-
 
 
 

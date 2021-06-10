@@ -49,6 +49,7 @@ for (let i = 0; i < elements.length; i++) {
 
 const hogText = document.getElementById("hogText");
 const hogImage = document.getElementById("hogImage");
+const hogCharacter = document.getElementById("hogCharacter");
 
 let hogStyle = getComputedStyle(hogImage);
 
@@ -113,7 +114,7 @@ function mouseEnter(event)
        if(text)
            message = text;
 
-         hogText.innerHTML = message;
+        hogText.innerHTML = message;
     }
 
 }
