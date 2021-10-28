@@ -2,8 +2,7 @@
 let overwatchUrl = 'https://ow-api.com/v1/stats/pc/us/OverPier-2472/complete';
 
 
-let search = encodeURIComponent("come fare cose da wikipedia?");
-
+//let search = encodeURIComponent("come fare cose da wikipedia?");
 //window.location.assign("https://www.google.com/search?q=" + search);
 
 async function postData(url = '') {
@@ -86,7 +85,7 @@ function mouseEnter(event)
 
        if(currentIndex == 0)
        {
-         let rank = getHighestRank(data.ratings);
+         let rank = data.ratings[0]//getHighestRank(data.ratings);
          let role = rank.role;
          let sr = rank.level;
          hogText.innerHTML = randomHogMessage.replace("{0}",role).replace("{1}",sr);
