@@ -59,7 +59,7 @@ function onPlayerStateChange(event) {
       hogImage.src = hogStyle.getPropertyValue("--music-hog");
       hogCharacter.style.bottom = "-35px";
       event.target.setLoop(true);
-      event.target.setShuffle(true);
+      //event.target.setShuffle(true);
       isCuing = false;
    }
    else if(isCuing && event.data == YT.PlayerState.CUED)
@@ -73,10 +73,6 @@ function cuePlaylist(playlistID)
 {
   player.cuePlaylist({ listType: "playlist",list: playlistID});
   isCuing = true;
-}
-
-function setShuffleFunction(){
-   player.setShuffle(true);
 }
 
 
