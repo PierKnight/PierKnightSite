@@ -1,0 +1,75 @@
+
+
+.undraggable
+{
+    -moz-window-dragging: no-drag;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+    -ms-user-select: none;
+}
+
+.hook
+{
+    display: flex;
+    flex-flow: column;
+    position: fixed;
+    width: 40px;
+    left: 30px;
+    bottom: 30px;
+    transform-origin: bottom center;
+    animation: throwHook 0.6s 2 cubic-bezier(.08,1.08,.83,.99) alternate;
+    
+}
+
+.hookedItem
+{
+    position: absolute;
+    overflow: visible;
+}
+
+.jesus
+{
+    position: fixed;
+}
+
+
+
+@keyframes throwHook {
+    0%{
+        transform: rotate(var(--angle)) translateY(calc(100%));   
+        clip-path: inset(-1000px -1000px calc(100%) -1000px);    
+        clip-path: polygon();
+    }
+    100%
+    {
+        transform: rotate(var(--angle)) translateY(calc(100% - var(--longness)));    
+        clip-path: inset(-1000px -1000px calc(100% - var(--longness)) -1000px);  
+    }
+}
+
+.menu
+{
+    margin: 50px 20%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-style: solid;
+    border-radius: 20px;
+    border-color: black;
+    justify-content: center;
+
+}
+.card
+{
+    width: 100px;
+    height: 100px;
+    padding: 10px;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+
+
