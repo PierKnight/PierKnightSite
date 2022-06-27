@@ -11,6 +11,14 @@
     -ms-user-select: none;
 }
 
+.roadhog
+{
+    position: fixed;
+    width: 20%;
+    max-width: 130px;
+    bottom: 5px;
+}
+
 .hook
 {
     display: flex;
