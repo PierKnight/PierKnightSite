@@ -1,0 +1,107 @@
+
+
+.undraggable
+{
+    -moz-window-dragging: no-drag;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    pointer-events: none;
+    -ms-user-select: none;
+}
+
+#roadhog
+{
+    
+    width: 20%;
+    position: fixed;
+    bottom: 0px;
+    min-width: 130px;
+    max-width: 220px;
+}
+
+#roadhogImage
+{
+    width: 100%;
+    margin: 0px auto;
+    display: block;
+    cursor: grab;
+}
+
+.hogJumping
+{
+    animation: hogJump .56s ease-in-out;
+}
+
+#hogDialog
+{
+    word-wrap: break-word;
+    text-align: center;
+    padding: 10px;
+    border-style: groove;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: black;
+    scale: 0;
+    opacity: 0;
+    z-index: 1;
+
+    transition: all 0.2s ease-in;
+
+}
+
+.hook
+{
+    display: flex;
+    flex-flow: column;
+
+    --W: 20%;
+    width: var(--W);
+    position: absolute;
+    transform-origin: bottom center;
+    bottom: 25%;
+    left: calc(50% - calc(var(--W) / 2));
+    animation: throwHook 0.6s 2 cubic-bezier(.08,1.08,.83,.99) alternate;
+    z-index: -3;
+}
+
+.hookedItem
+{
+    position: absolute;
+    overflow: visible;    
+    top: 0px;
+    left: 0px;
+    min-width: 100px;
+    max-width: 400px;
+}
+
+
+
+@keyframes throwHook {
+    0%{
+        transform: rotate(var(--angle)) translateY(calc(100%));   
+        clip-path: inset(-1000px -1000px calc(100%) -1000px);    
+        clip-path: polygon();
+    }
+    100%
+    {
+        transform: rotate(var(--angle)) translateY(calc(100% - var(--longness)));    
+        clip-path: inset(-1000px -1000px calc(100% - var(--longness)) -1000px);  
+    }
+}
+
+@keyframes hogJump {
+   
+    20%,
+    60% {
+        transform: translateY(-10px);
+    }
+    40%,
+    80% {
+        transform: translateY(0px)
+    }
+}
+
+
+
