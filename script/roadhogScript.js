@@ -2,6 +2,7 @@
 // ------------------------AUDIO SETTING---------------------------
 const audioButton = document.getElementById("audioButton");
 var audioValue = localStorage.getItem("audioSetting");
+const audioArray = [];
 
 function isAudioOn()
 {
@@ -13,6 +14,8 @@ function setAudioEnabled(enabled)
     const enabledS = enabled ? "on" : "off";
     localStorage.setItem("audioSetting",enabledS);
     audioValue = enabledS;
+
+    audioArray.forEach((a) => a.muted = !enabled);
 }
 
 if(!audioValue) //se è la prima volta default on
@@ -28,10 +31,16 @@ audioButton.addEventListener("click",(event) =>
 });
 
 
+
+
+
 function playAudio(audio)
 {
-    if(isAudioOn())
-        audio.play();
+    audio.muted = !isAudioOn();
+    audio.play();
+    audioArray.push(audio);
+    audio.addEventListener("ended",(event) => audioArray.filter((a) => a == audio));
+    return audio;
 }
 
 
@@ -83,8 +92,6 @@ document.addEventListener("mousedown",(event) =>
     let distance = Math.sqrt(cos**2 + sin**2);
     hook.style.setProperty("--angle",angle + "deg");
     hook.style.setProperty("--longness",distance + "px");
-
-    console.log(boxBoundingRect.width)
 
     //140 is the original image width
     //54 is the original image height
@@ -140,7 +147,6 @@ document.addEventListener("mouseover",(event) =>
         roadhogDialog.style.opacity = "1";
         roadhogDialog.style.scale = "1";
         roadhogImage.classList.add("hogJumping");
-        console.log("enter");
         
     }
     else
@@ -148,7 +154,6 @@ document.addEventListener("mouseover",(event) =>
         roadhogDialog.style.opacity = "0";
         roadhogDialog.style.scale = "0";
         roadhogImage.classList.remove("hogJumping");
-        console.log("leave");
     }
     
 },false);
@@ -164,7 +169,8 @@ roadhogImage.addEventListener("click",(event) =>
     const audioType = generateRandomNumber(10);
     const audio = new Audio(`media/hog/shittalking/audio${audioType}.mp3`);
     audio.volume = 0.7;
-    playAudio(audio);  //play audio audio :E
+    playAudio(audio);  //play audio audio :E    
+
 });
 
 

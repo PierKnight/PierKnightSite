@@ -62,12 +62,10 @@
     border-radius: 5px;
     border-width: 2px;
     border-color: black;
-    scale: 0;
+    background-color: white;
     opacity: 0;
     z-index: 1;
-
     transition: all 0.2s ease-in;
-
 }
 
 .hook
@@ -82,13 +80,12 @@
     bottom: 25%;
     left: calc(50% - calc(var(--W) / 2));
     animation: throwHook 0.4s 2 cubic-bezier(.08,1.08,.83,.99) alternate;
-    z-index: -3;
+    z-index: -5;
 }
 
 .hookedItem
 {
     position: absolute;
-    overflow: visible;    
     top: 0px;
     left: 0px;
     max-width: 400px;
@@ -96,10 +93,16 @@
 
 #audioButton
 {
-    bottom: 160px;
-    position: absolute;
+    position: fixed;
     min-width: 20px;
     min-height: 20px;
+    z-index: 1;
+    color: white;
+    background-color: #353535;
+    border-radius: 10px;
+    padding: 6px;
+    left: 10px;
+    top: 10px;
 }
 #audioButton::after
 {
