@@ -8,9 +8,21 @@ function isHookable(element)
     return element != null && element != document.body && element != document.documentElement && !element.classList.contains("notHookable");
 }
 
+
+const roadhogImage = document.getElementById("roadhogImage");
+
 //hook handler
 document.addEventListener("mousedown",(event) =>
 {
+    if(event.target == roadhogImage)
+        return;
+    
+    const hookAudio = new Audio(isHookable(event.target) ? 'media/hog/hook_throw_good.mp3' : 'media/hog/hook_throw.mp3');
+    hookAudio.volume = 0.5;
+    hookAudio.play();
+
+
+    
 
     const roadhog = document.getElementById("roadhog");
     
@@ -49,10 +61,6 @@ document.addEventListener("mousedown",(event) =>
         hook.appendChild(chain);
     }
 
-    const audio = new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3');
-    //audio.play();
-
-
     let hitElement = null;
 
     const oldX = event.clientX;
@@ -67,8 +75,7 @@ document.addEventListener("mousedown",(event) =>
             copy.classList.add("hookedItem");
             hook.appendChild(copy);
             element.style.visibility = "hidden";
-            audio.pause();
-
+            
             hitElement = element;
         }
         
@@ -86,7 +93,6 @@ document.addEventListener("mousedown",(event) =>
 
 
 //roadhog talk hander
-const roadhogImage = document.getElementById("roadhogImage");
 const roadhogDialog = document.getElementById("hogDialog");
    
 document.addEventListener("mouseover",(event) =>
@@ -111,6 +117,17 @@ document.addEventListener("mouseover",(event) =>
     }
     
 },false);
+
+
+roadhogImage.addEventListener("click",(event) =>
+{
+    roadhogImage.classList.add("hogJumping");     
+    const audioType = generateRandomNumber(10);
+    const audio = new Audio(`media/hog/shittalking/audio${audioType}.mp3`);
+    audio.volume = 0.7;
+    audio.play();      
+    setTimeout(() => {roadhogImage.classList.remove("hogJumping");},560);   
+});
 
 
 

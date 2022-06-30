@@ -4,11 +4,28 @@
 {
     -moz-window-dragging: no-drag;
     -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
+    
+
+    
     pointer-events: none;
-    -ms-user-select: none;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+
+.unselectable
+{
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    -moz-window-dragging: no-drag;
+    -webkit-user-drag: none;
 }
 
 #roadhog
@@ -27,11 +44,13 @@
     margin: 0px auto;
     display: block;
     cursor: grab;
+    filter: drop-shadow(-10px 2px 14px #353535);
 }
+
 
 .hogJumping
 {
-    animation: hogJump .56s ease-in-out;
+    animation: hogJump .56s ease-in-out forwards;
 }
 
 #hogDialog
@@ -62,7 +81,7 @@
     transform-origin: bottom center;
     bottom: 25%;
     left: calc(50% - calc(var(--W) / 2));
-    animation: throwHook 0.6s 2 cubic-bezier(.08,1.08,.83,.99) alternate;
+    animation: throwHook 0.4s 2 cubic-bezier(.08,1.08,.83,.99) alternate;
     z-index: -3;
 }
 
