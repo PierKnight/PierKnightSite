@@ -121,12 +121,14 @@ document.addEventListener("mouseover",(event) =>
 
 roadhogImage.addEventListener("click",(event) =>
 {
+    
+    roadhogImage.classList.remove("hogJumping");   
+    roadhogImage.offsetLeft; //reflow the image
     roadhogImage.classList.add("hogJumping");     
     const audioType = generateRandomNumber(10);
     const audio = new Audio(`media/hog/shittalking/audio${audioType}.mp3`);
     audio.volume = 0.7;
     audio.play();      
-    setTimeout(() => {roadhogImage.classList.remove("hogJumping");},560);   
 });
 
 
