@@ -91,8 +91,23 @@
     overflow: visible;    
     top: 0px;
     left: 0px;
-    min-width: 100px;
     max-width: 400px;
+}
+
+#audioButton
+{
+    bottom: 160px;
+    position: absolute;
+    min-width: 20px;
+    min-height: 20px;
+}
+#audioButton::after
+{
+    content: "volume_off";
+}
+#audioButton.on::after
+{
+    content: "volume_up";
 }
 
 

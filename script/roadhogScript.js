@@ -1,6 +1,41 @@
 
-//pixel per second
-const SPEED = 800;
+// ------------------------AUDIO SETTING---------------------------
+const audioButton = document.getElementById("audioButton");
+var audioValue = localStorage.getItem("audioSetting");
+
+function isAudioOn()
+{
+    return audioValue === "on";
+}
+
+function setAudioEnabled(enabled)
+{
+    const enabledS = enabled ? "on" : "off";
+    localStorage.setItem("audioSetting",enabledS);
+    audioValue = enabledS;
+}
+
+if(!audioValue) //se è la prima volta default on
+    setAudioEnabled(true);
+
+if(isAudioOn())
+    audioButton.classList.add("on");
+
+audioButton.addEventListener("click",(event) =>
+{
+    audioButton.classList.toggle("on");
+    setAudioEnabled(!isAudioOn());
+});
+
+
+function playAudio(audio)
+{
+    if(isAudioOn())
+        audio.play();
+}
+
+
+// -------------------------END----------------------------------------
 
 
 function isHookable(element)
@@ -19,7 +54,7 @@ document.addEventListener("mousedown",(event) =>
     
     const hookAudio = new Audio(isHookable(event.target) ? 'media/hog/hook_throw_good.mp3' : 'media/hog/hook_throw.mp3');
     hookAudio.volume = 0.5;
-    hookAudio.play();
+    playAudio(hookAudio);
 
 
     
@@ -119,6 +154,7 @@ document.addEventListener("mouseover",(event) =>
 },false);
 
 
+//say random voice
 roadhogImage.addEventListener("click",(event) =>
 {
     
@@ -128,8 +164,7 @@ roadhogImage.addEventListener("click",(event) =>
     const audioType = generateRandomNumber(10);
     const audio = new Audio(`media/hog/shittalking/audio${audioType}.mp3`);
     audio.volume = 0.7;
-    audio.play();      
+    playAudio(audio);  //play audio audio :E
 });
-
 
 
