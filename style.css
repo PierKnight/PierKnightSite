@@ -87,6 +87,16 @@ body{
     transition: height 1s;
 }
 
+#hook
+{
+    transition: transform 0.2s;
+    transform-origin: 35px 35px;
+    display: none;
+    
+
+    
+}
+
 
 @keyframes hog-jump {
  0%,

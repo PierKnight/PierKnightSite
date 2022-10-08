@@ -42,7 +42,7 @@ function clearSelection()
 function singleSelect(li) {
 
        clearSelection();
-       li.classList.add('selected');
+       li.classList.toggle('selected');
        selectedEntry = li;
 }
 

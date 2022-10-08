@@ -49,6 +49,7 @@ for (let i = 0; i < elements.length; i++) {
 const hogText = document.getElementById("hogText");
 const hogImage = document.getElementById("hogImage");
 const hogCharacter = document.getElementById("hogCharacter");
+const hogContent = document.getElementById("hog_content");
 
 let hogStyle = getComputedStyle(hogImage);
 
@@ -127,6 +128,59 @@ function mouseLeave(event)
      //stop hog jump
      hogImage.classList.remove('hogHopping');
 }
+
+
+let divElement = document.createElement("Div");
+
+let hook = document.createElement("img");
+
+
+hook.alt = "ee";
+hook.src = "https://demiart.ru/apple-touch-icon.png";
+divElement.appendChild(hook);
+divElement.style.position = "fixed";
+divElement.id = "hook";
+document.getElementsByTagName("body")[0].appendChild(divElement);
+
+document.addEventListener("mousedown",event =>
+{
+   
+   
+   divElement.style.display = "inline-block";
+
+   
+
+
+
+   let angle = Math.atan2(event.pageX,event.pageY);
+   
+
+   
+
+  // divElement.setAttribute("style", "transform: rotate(" + (-angle / Math.PI * 180) + "deg)");
+
+  
+
+   
+   
+   setTimeout(function(x,y) {
+      divElement.setAttribute("style", "transform: translate(" + x + "px," + y + "px)");
+      console.log(x);
+   
+    }, 0,event.pageX,event.pageY);
+
+    setTimeout(function() {
+      divElement.setAttribute("style", "transform: translate(0px,0px)");
+    }, 200);
+
+   setTimeout(function() {    
+      divElement.style.display = "none";
+   }, 400);
+   
+
+   
+
+});
 
 
 
