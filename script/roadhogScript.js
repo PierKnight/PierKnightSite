@@ -49,11 +49,14 @@ function playAudio(audio)
 
 function isHookable(element)
 {
-    return element != null && element != document.body && element != document.documentElement && !element.classList.contains("notHookable");
+    return element != null && element != document.body && element != document.documentElement && !element.classList.contains("hookable");
 }
 
 
+//the roadhog image itself
 const roadhogImage = document.getElementById("roadhogImage");
+//the section with image and audio button
+const roadhogSection = document.querySelector(".roadhogEntitySection");
 
 //hook handler
 document.addEventListener("mousedown",(event) =>
@@ -65,20 +68,19 @@ document.addEventListener("mousedown",(event) =>
     hookAudio.volume = 0.5;
     playAudio(hookAudio);
 
-
-    
-
-    const roadhog = document.getElementById("roadhog");
-    
-
     const hook = document.createElement("div");
     hook.classList.add("hook");
     hook.classList.add("undraggable");
 
-    let hookImage = document.createElement("img");
+    const hookImage = document.createElement("img");
     hookImage.src = "media/hog/hook.png";
     hook.appendChild(hookImage);
-    roadhog.appendChild(hook);
+
+    const chainImage = document.createElement("div");
+    chainImage.classList.add("chain");
+    hook.appendChild(chainImage);
+
+    roadhogSection.appendChild(hook);
 
     
     const boxBoundingRect = hook.getBoundingClientRect();
@@ -88,20 +90,11 @@ document.addEventListener("mousedown",(event) =>
     };
     const cos = event.clientX - boxCenter.x;
     const sin = - (event.clientY - boxCenter.y);
-    const angle = Math.atan2(cos, sin )*(180 / Math.PI);	   
-    let distance = Math.sqrt(cos**2 + sin**2);
-    hook.style.setProperty("--angle",angle + "deg");
-    hook.style.setProperty("--longness",distance + "px");
+    const angle = Math.atan2(cos, sin );	   
+    let distance = Math.sqrt(cos**2 + sin**2) - hookImage.height / 2;
 
-    //140 is the original image width
-    //54 is the original image height
-    const totalChains = Math.floor(distance / (54 * (boxBoundingRect.width / 140.0)));
-    for (var i = 0; i < totalChains; i++) 
-    {
-        const chain = document.createElement("img");
-        chain.src = "media/hog/chain.png";
-        hook.appendChild(chain);
-    }
+    hook.style.setProperty("--angle",angle + "rad");
+    chainImage.style.setProperty("--longness",distance + "px");
 
     let hitElement = null;
 
@@ -113,8 +106,16 @@ document.addEventListener("mousedown",(event) =>
             
         if(isHookable(element))
         {
-            const copy = element.cloneNode(true);
-            copy.classList.add("hookedItem");
+            const copy = element.cloneNode(true);  
+            const hitBox = element.getBoundingClientRect();
+
+            copy.classList.add("hookedItem");     
+            copy.style.width = hitBox.width + "px";
+            copy.style.height = hitBox.height + "px";
+            //copy.style.left = -(event.clientX - hitBox.x) + "px";
+            //copy.style.top = -(event.clientY - hitBox.y) + "px";
+            copy.style.left = -(hitBox.width / 2) + "px";
+            copy.style.top = "0px";
             hook.appendChild(copy);
             element.style.visibility = "hidden";
             
@@ -124,8 +125,7 @@ document.addEventListener("mousedown",(event) =>
     });
 
     hook.addEventListener("animationend",(ev) => 
-    {
-        
+    {    
         hook.parentNode.removeChild(hook);
         if(hitElement != null)
             hitElement.style.visibility = "";

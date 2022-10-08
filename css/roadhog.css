@@ -30,7 +30,8 @@
 
 #roadhog
 {
-    
+    display: flex;
+    flex-direction: column;
     width: 20%;
     position: fixed;
     bottom: 0px;
@@ -70,6 +71,7 @@
 
 .hook
 {
+    position: absolute;
     display: flex;
     flex-flow: column;
 
@@ -77,32 +79,51 @@
     width: var(--W);
     position: absolute;
     transform-origin: bottom center;
-    bottom: 25%;
-    left: calc(50% - calc(var(--W) / 2));
+    bottom: 50%;
+    left: calc(50% - var(--W) / 2);
+    z-index: -1;
+    transform: rotate(var(--angle));
+}
+
+.chain
+{
+    background-image: url("../media/hog/chain.png");
+    width: 100%;
+    background-size: contain;
+    background-position-y: top;
+    background-repeat: repeat-y;
     animation: throwHook 0.4s 2 cubic-bezier(.08,1.08,.83,.99) alternate;
-    z-index: -5;
 }
 
 .hookedItem
 {
     position: absolute;
-    top: 0px;
-    left: 0px;
-    max-width: 400px;
+    bottom: unset;
+    right: unset;
+    
+}
+
+@keyframes r
+{
+    from
+    {
+        transform: rotate(0deg);
+    }
+    to
+    {
+        transform: rotate(360deg);
+    }
 }
 
 #audioButton
 {
-    position: fixed;
-    min-width: 20px;
-    min-height: 20px;
+    position: absolute;
     z-index: 1;
     color: white;
     background-color: #353535;
     border-radius: 10px;
     padding: 6px;
-    left: 10px;
-    top: 10px;
+    margin-top: 5px;
 }
 #audioButton::after
 {
@@ -114,17 +135,13 @@
 }
 
 
-
 @keyframes throwHook {
-    0%{
-        transform: rotate(var(--angle)) translateY(calc(100%));   
-        clip-path: inset(-1000px -1000px calc(100%) -1000px);    
-        clip-path: polygon();
+    from{
+        height: 0px;
     }
-    100%
+    to
     {
-        transform: rotate(var(--angle)) translateY(calc(100% - var(--longness)));    
-        clip-path: inset(-1000px -1000px calc(100% - var(--longness)) -1000px);  
+        height: var(--longness);
     }
 }
 

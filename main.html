@@ -2,6 +2,7 @@
 <html lang="it">
     <head>
         <link rel="stylesheet" href="css/roadhog.css"/> 
+        <link rel="stylesheet" href="css/dixie_clock.css"/> 
         <link rel="stylesheet" href="css/style.css"/> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />  
         <script src="script/util.js"></script>  
@@ -12,22 +13,37 @@
     <body>
 
     
-        <div id="roadhog" class="notHookable unselectable">
-            <div id="audioButton" class="material-symbols-outlined"></div>
+        <div id="roadhog" class="unselectable">
             <div id="hogDialog" class="undraggable"></div>
-            <img draggable="false" id="roadhogImage" class="notHookable" src="media/hog/normal.gif">
+            <div class="roadhogEntitySection" style="position: relative">    
+                <span id="audioButton" class="material-symbols-outlined"></span>
+                <img draggable="false" id="roadhogImage" src="media/hog/normal.gif">
+            </div>
         </div>
 
+          
         <div class="menu" hogMessage="rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr">
-            <a href="https://www.qries.com/">
-                <div class="card">
-                    <p>RRRRR</p>
-                </div>
-            </a>
+                <span class="material-symbols-outlined card">add_circle</span>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+                <div class="card"></div>
+        </div>
+
+        <div id="clock" class="unselectable">
+            <img class="bulb" draggable="false">
+            <img class="bulb" draggable="false">
+            <img class="bulb" draggable="false" src="media/clock/bulb_dot.png">
+            <img class="bulb" draggable="false">
+            <img class="bulb" draggable="false">
+            <img class="bulb" draggable="false" src="media/clock/bulb_dot.png">
+            <img class="bulb" draggable="false">
+            <img class="bulb" draggable="false">
         </div>
         
           
         
         <script src="script/roadhogScript.js"></script>
+        <script src="script/dixie_clock.js"></script>
     </body>
 </html> 

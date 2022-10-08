@@ -1,6 +1,6 @@
 .menu
 {
-    margin: 50px 20%;
+    margin: 50px 30px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -8,14 +8,13 @@
     border-radius: 20px;
     border-color: black;
     justify-content: center;
-
+    
 }
-
 .card
 {
-    width: 100px;
-    height: 100px;
-    padding: 10px;
-    text-align: center;
-    word-wrap: break-word;
+    margin: 10px;
+    font-size: 100px;
+    background-color: rebeccapurple;
 }
+
+
