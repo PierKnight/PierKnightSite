@@ -1,17 +1,6 @@
-
-
-#audioElement
+#animeplayer
 {
-    position: fixed;
-    bottom: 14px;
-    margin: 0px 30px;
     width: 60%;
-    left: 20%;
-    text-align: center;
-}
-
-
-#audioElement>audio
-{
-    width: 100%;
+    height: auto;
+    margin: 0px auto;
 }

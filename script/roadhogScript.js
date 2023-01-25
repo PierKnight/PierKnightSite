@@ -112,8 +112,6 @@ document.addEventListener("mousedown",(event) =>
             copy.classList.add("hookedItem");     
             copy.style.width = hitBox.width + "px";
             copy.style.height = hitBox.height + "px";
-            //copy.style.left = -(event.clientX - hitBox.x) + "px";
-            //copy.style.top = -(event.clientY - hitBox.y) + "px";
             copy.style.left = -(hitBox.width / 2) + "px";
             copy.style.top = "0px";
             hook.appendChild(copy);
@@ -136,9 +134,39 @@ document.addEventListener("mousedown",(event) =>
 
 //roadhog talk hander
 const roadhogDialog = document.getElementById("hogDialog");
-   
+let oldMessageInterval;   
+function broadcastMessage(message, time)
+{
+    if(time === undefined)
+        time = 1000;
+
+    clearTimeout(oldMessageInterval);
+    roadhogImage.classList.remove("hogJumping");   
+    roadhogImage.offsetLeft; //reflow the image
+    console.log(message);
+    roadhogDialog.innerHTML = message;
+    roadhogDialog.style.opacity = "1";
+    roadhogDialog.style.scale = "1";
+    roadhogImage.classList.add("hogJumping");
+    oldMessageInterval = setTimeout(() => {
+        roadhogDialog.style.opacity = "0";
+        roadhogDialog.style.scale = "0";
+        roadhogImage.classList.remove("hogJumping");
+        oldMessageInterval = undefined;
+    }, time);
+
+}
+
+broadcastMessage("Benvenuto nella pagina Principale!", 2000);
+
+
+
 document.addEventListener("mouseover",(event) =>
 {
+    /*
+    if(oldMessageInterval !== undefined)
+        return;
+
     const message = event.target.getAttribute("hogMessage");
     if(message)
     {
@@ -155,14 +183,18 @@ document.addEventListener("mouseover",(event) =>
         roadhogDialog.style.scale = "0";
         roadhogImage.classList.remove("hogJumping");
     }
+    */
+    const message = event.target.getAttribute("hogMessage");
+    if(message)
+        broadcastMessage(message, 2000);
     
 },false);
+
 
 
 //say random voice
 roadhogImage.addEventListener("click",(event) =>
 {
-    
     roadhogImage.classList.remove("hogJumping");   
     roadhogImage.offsetLeft; //reflow the image
     roadhogImage.classList.add("hogJumping");     

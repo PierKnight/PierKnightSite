@@ -1,6 +1,3 @@
-
-
-
 const anilistQuery = `
 query ($username: String) 
 { # Define which variables will be used in the query (id)
@@ -15,54 +12,56 @@ query ($username: String)
 }
 `;
 
-const anilistUrl = `https:graphql.anilist.co`;
 
-async function getAnilistAnimes(username)
+
+
+const videoElement = document.getElementById("animeplayer");
+const videoPlayerSource = document.querySelector("#animeplayer source");
+const search = document.getElementById("search");
+
+let searchTimeout;
+search.addEventListener('input', (value) =>
 {
-    const variables = {
-        username: username
-    }
-    const options = 
-    {
-        method: `POST`,
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-        },
-        body: JSON.stringify({
-            query: anilistQuery,
-            variables: variables
-        })  
-    };
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    console.log(search.value);
 
-    const anilistResponse = await fetch(anilistUrl, options).catch((err) => console.log(err.message));
-    const anilistJson = await anilistResponse.json();
+    $.get("https://api.animethemes.moe/anime?fields[anime]=id,name&page[size]=20&q=" + search.value, (result) => {
+      broadcastMessage(result, 2000);
+    }).fail(() => {
+      broadcastMessage("Ricerca Fallita", 2000);
+    });
 
-    var animeList = anilistJson.data.MediaListCollection.lists[0].entries;
+  }, 500);
+});
 
-    var animeString = "";
+$('.basicAutoComplete').autoComplete({
+  resolverSettings: {
+      url: 'https://api.animethemes.moe/anime?fields[anime]=id,name&page[size]=20'
+  }
+});
 
-    for (var index in animeList)
-        animeString += animeList[index].mediaId + ",";
-    animeString = animeString.slice(0, -1);
-    return "https://staging.animethemes.moe/api/anime?sort=random&filter[has]=resources&include=animethemes.animethemeentries.videos&filter[site]=Anilist&page[size]=100&page[number]=1&filter[external_id]=" + animeString;
-}
 
-const animeDiv = document.querySelector(".animeContainer");
+videoElement.onloadedmetadata = (event) => {
+  console.log(videoElement.duration);
+  //videoElement.currentTime = videoElement.duration / 2;
+};
 
-async function populateList(animeThemesUrl)
+console.log(videoPlayerSource);
+
+function populateList(themesJson)
 {
-    const animeSongList = [];
-    const themesResponse = await fetch(animeThemesUrl);
-    const themesJson = await themesResponse.json();
+    const animeList = [];
     for(let indexAnime in themesJson.anime)
     {
       const animeName = themesJson.anime[indexAnime].name;
       const animeThemes = themesJson.anime[indexAnime].animethemes;
+
+      const songsArray = [];
       for(let indexThemes in animeThemes)
       {
         const type = animeThemes[indexThemes].type;
-        
+      
 
         const entries = animeThemes[indexThemes].animethemeentries;
         for(let entriesIndex in entries)
@@ -79,8 +78,7 @@ async function populateList(animeThemesUrl)
             const url = videos[videoIndex].link;
             const mimetype = videos[videoIndex].mimetype;
             
-            animeSongList.push({
-              animeName: animeName,
+            songsArray.push({
               type: type,
               nsfw: nsfw,
               spoiler: spoiler,
@@ -88,46 +86,63 @@ async function populateList(animeThemesUrl)
               url: url,
               mimetype: mimetype
             });
-
           }
           
         }
 
       }
+
+      animeList.push({
+        animeName: animeName,
+        songs: songsArray
+      });
     }
-    return animeSongList;
+
+
+    
+    
+    
+    broadcastMessage("Ascolta: " + animeList[0].animeName, 2000);
+
+    
+    const song = animeList[0].songs[generateRandomNumber(animeList[0].songs.length)];
+    videoPlayerSource.type = song.mimetype;
+    videoPlayerSource.src = song.url;
+    
+
+    videoElement.load();
     
 }
 
-
-
-
-let eee = getAnilistAnimes("pierknight");
-
-
-const audioPlayer = document.getElementById("audioElement");
-const audioPlayerElement = audioPlayer.childNodes[1];
-var animeIndex = -1;
-var animeSongList = [];
-
-
-function nextSong()
+function loadAnimes(username)
 {
-  animeIndex++;
-  audioPlayerElement.src = animeSongList[animeIndex].url;
-  audioPlayerElement.play();
-}
+    broadcastMessage("Cerco gli anime dato utente: " + username, 2000);
+    $.post("https:graphql.anilist.co", {
+        query: anilistQuery,
+        variables: {username: username}
+    }, (anilistJson) => {
+    
+        broadcastMessage("Trovato anime, ricerca della canzone..", 2000);
+        var animeList = anilistJson.data.MediaListCollection.lists[0].entries;
+    
+        var animeString = "";
+    
+        for (var index in animeList)
+            animeString += animeList[index].mediaId + ",";
+        animeString = animeString.slice(0, -1);
+        const animethemeQuery = "https://api.animethemes.moe/anime?sort=random&filter[has]=resources&include=animethemes.animethemeentries.videos&filter[site]=Anilist&page[size]=100&page[number]=1&filter[external_id]=" + animeString;
+    
+        $.get(animethemeQuery, (animethemeJson) => {
 
-audioPlayerElement.addEventListener("ended",(event) => 
-{
-  nextSong();
-});
+            populateList(animethemeJson);
+        })
+        .fail(() => {
+            broadcastMessage("Non sono riuscito a prendere l'anime :C", 2000);
+        });
 
-eee.then(ele => {
-    populateList(ele).then(list =>
-    { 
-      animeSongList = list;
-      nextSong();
     })
-});
+    .fail(() => {
+        broadcastMessage("Non sono riuscito a prendere l'anime :C", 2000);
+    });
+}
 
