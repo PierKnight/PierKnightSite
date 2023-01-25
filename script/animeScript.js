@@ -41,8 +41,10 @@ $('.basicAutoComplete').autoComplete({
   },
   events: {
     searchPost: function (resultFromServer) {
-        console.log(resultFromServer);
-        return resultFromServer.results;
+        const animeNames = [];
+        for(let indexAnime in resultFromServer.anime)
+          animeNames.push(resultFromServer.anime[indexAnime].name);
+        return animeNames;
     }
   }
 });
