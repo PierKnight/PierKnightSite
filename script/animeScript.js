@@ -1,6 +1,6 @@
 const anilistQuery = `
 query ($username: String) 
-{ # Define which variables will be used in the query (id)
+{
   MediaListCollection(type: ANIME userName: $username status: COMPLETED)
   {
     lists{
@@ -117,7 +117,7 @@ function populateList(themesJson)
 function loadAnimes(username)
 {
     broadcastMessage("Cerco gli anime dato utente: " + username, 2000);
-    $.post("https:graphql.anilist.co", {
+    $.post("https://graphql.anilist.co", {
         query: anilistQuery,
         variables: {username: username}
     }, (anilistJson) => {
