@@ -49,7 +49,7 @@ function playAudio(audio)
 
 function isHookable(element)
 {
-    return element != null && element != document.body && element != document.documentElement && !element.classList.contains("hookable");
+    return element != null && element != document.body && element != document.documentElement && element.getAttribute("hookable");
 }
 
 
@@ -63,6 +63,7 @@ document.addEventListener("mousedown",(event) =>
 {
     if(event.target == roadhogImage)
         return;
+
     
     const hookAudio = new Audio(isHookable(event.target) ? 'media/hog/hook_throw_good.mp3' : 'media/hog/hook_throw.mp3');
     hookAudio.volume = 0.5;
