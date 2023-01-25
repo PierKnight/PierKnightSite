@@ -38,6 +38,12 @@ search.addEventListener('input', (value) =>
 $('.basicAutoComplete').autoComplete({
   resolverSettings: {
       url: 'https://api.animethemes.moe/anime?fields[anime]=id,name&page[size]=20'
+  },
+  events: {
+    searchPost: function (resultFromServer) {
+        console.log(resultFromServer);
+        return resultFromServer.results;
+    }
   }
 });
 
