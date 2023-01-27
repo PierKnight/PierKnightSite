@@ -27,32 +27,33 @@ videoElement.onloadedmetadata = (event) => {
   console.log(videoElement.duration);
 };
 
+function toggleCensor()
+{
+  $("#banner").toggleClass("hide");
+}
+
 function playNextAnime()
 {
 
-
-
-  animeIndex = animeIndex + 1;
-  
-  const anime = animeList[animeIndex];
-  if(animeIndex > 0)
+  if(animeIndex >= 0)
   {
+    console.log("SELECTED: " + selectedAnimeId);
     if(selectedAnimeId === animeList[animeIndex].id)
       broadcastMessage("BRAVO HAI AZZECCATO L'anime", 4000);
     else
       broadcastMessage("NOPE", 4000);
   }
-  else
-    broadcastMessage("Iniziamo con: " + anime.animeName, 4000);
 
-  console.log(animeIndex);
+  animeIndex = animeIndex + 1;
+  const anime = animeList[animeIndex];
   const song = anime.songs[generateRandomNumber(anime.songs.length)];
   videoPlayerSource.type = song.mimetype;
   videoPlayerSource.src = song.url;
-  videoElement.load();
-    
-  
-  
+  videoElement.load();  
+  if(song.nsfw)
+    broadcastMessage("Questa è spicy", 3000);
+  if(song.spoiler)
+    broadcastMessage("Questa contiene spoiler!", 3000);
 
 }
     
@@ -115,36 +116,47 @@ function populateList(themesJson)
 
 }
 
-function loadAnimes(username)
+function loadAnimes()
 {
-    broadcastMessage("Cerco gli anime dato utente: " + username, 2000);
-    $.post("https://graphql.anilist.co", {
-        query: anilistQuery,
-        variables: {username: username}
-    }, (anilistJson) => {
-    
-        broadcastMessage("Trovato anime, ricerca della canzone..", 2000);
-        var animeList = anilistJson.data.MediaListCollection.lists[0].entries;
-    
-        var animeString = "";
-    
-        for (var index in animeList)
-            animeString += animeList[index].mediaId + ",";
-        animeString = animeString.slice(0, -1);
-        const animethemeQuery = "https://api.animethemes.moe/anime?sort=random&filter[has]=resources&include=animethemes.animethemeentries.videos&filter[site]=Anilist&page[size]=100&page[number]=1&filter[external_id]=" + animeString;
-    
-        $.get(animethemeQuery, (animethemeJson) => {
 
-            populateList(animethemeJson);
-        })
-        .fail(() => {
-            broadcastMessage("Non sono riuscito a prendere l'anime :C", 2000);
-        });
+  const username = $("#anilistInput").first().val();
 
-    })
-    .fail(() => {
-        broadcastMessage("Non sono riuscito a prendere l'anime :C", 2000);
-    });
+  if(username.length == 0)
+  {
+    broadcastMessage("Username vuoto", 2000);
+    return;
+  }
+
+  broadcastMessage("Cerco gli anime dato utente: " + username);
+  $.post("https://graphql.anilist.co", {
+      query: anilistQuery,
+      variables: {username: username}
+  }, (anilistJson) => {
+  
+      broadcastMessage("Trovato anime, ricerca della canzone..");
+      var animeList = anilistJson.data.MediaListCollection.lists[0].entries;
+  
+      var animeString = "";
+  
+      for (var index in animeList)
+          animeString += animeList[index].mediaId + ",";
+      animeString = animeString.slice(0, -1);
+      const animethemeQuery = "https://api.animethemes.moe/anime?sort=random&filter[has]=resources&include=animethemes.animethemeentries.videos&filter[site]=Anilist&page[size]=100&page[number]=1&filter[external_id]=" + animeString;
+  
+      $.get(animethemeQuery, (animethemeJson) => {
+        $("section#game").toggleClass("hide");
+        $("section#hub").toggleClass("hide");
+        broadcastMessage("Che la partita abbia inizio!", 3000);
+        populateList(animethemeJson);
+      })
+      .fail(() => {
+          broadcastMessage("Non sono riuscito a prendere l'anime", 2000);
+      });
+
+  })
+  .fail(() => {
+      broadcastMessage("Non ho trovato una lista anime per " + username, 2000);
+  });
 }
 
 $('.basicAutoComplete').autoComplete({
@@ -176,6 +188,8 @@ $('.basicAutoComplete').autoComplete({
 });
 $('.basicAutoComplete').on('autocomplete.select', function(evt, item) {
   console.log(item);
+  
   selectedAnimeId = item.id;
+  console.log("selected: " + selectedAnimeId);
 });
 

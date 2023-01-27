@@ -135,27 +135,41 @@ document.addEventListener("mousedown",(event) =>
 
 //roadhog talk hander
 const roadhogDialog = document.getElementById("hogDialog");
+
+
+function jump()
+{
+    roadhogImage.classList.remove("hogJumping");   
+    roadhogImage.offsetLeft;
+    roadhogImage.classList.add("hogJumping");
+}
+
+
 let oldMessageInterval;   
 function broadcastMessage(message, time)
 {
-    if(time === undefined)
-        time = 1000;
 
     clearTimeout(oldMessageInterval);
-    roadhogImage.classList.remove("hogJumping");   
-    roadhogImage.offsetLeft; //reflow the image
+    jump();
     console.log(message);
     roadhogDialog.innerHTML = message;
     roadhogDialog.style.opacity = "1";
     roadhogDialog.style.scale = "1";
-    roadhogImage.classList.add("hogJumping");
-    oldMessageInterval = setTimeout(() => {
-        roadhogDialog.style.opacity = "0";
-        roadhogDialog.style.scale = "0";
-        roadhogImage.classList.remove("hogJumping");
-        oldMessageInterval = undefined;
-    }, time);
 
+    if(time === undefined)
+        return;
+    
+    oldMessageInterval = setTimeout(() => {
+        stopMessage();
+    }, time);
+}
+
+function stopMessage()
+{
+    roadhogDialog.style.opacity = "0";
+    roadhogDialog.style.scale = "0";
+    roadhogImage.classList.remove("hogJumping");
+    oldMessageInterval = undefined;
 }
 
 broadcastMessage("Benvenuto nella pagina Principale!", 2000);
@@ -164,32 +178,13 @@ broadcastMessage("Benvenuto nella pagina Principale!", 2000);
 
 document.addEventListener("mouseover",(event) =>
 {
-    /*
-    if(oldMessageInterval !== undefined)
-        return;
-
-    const message = event.target.getAttribute("hogMessage");
-    if(message)
-    {
-
-        roadhogDialog.innerHTML = message;
-        roadhogDialog.style.opacity = "1";
-        roadhogDialog.style.scale = "1";
-        roadhogImage.classList.add("hogJumping");
-        
-    }
-    else
-    {
-        roadhogDialog.style.opacity = "0";
-        roadhogDialog.style.scale = "0";
-        roadhogImage.classList.remove("hogJumping");
-    }
-    */
     const message = event.target.getAttribute("hogMessage");
     if(message)
         broadcastMessage(message, 2000);
     
 },false);
+
+
 
 
 

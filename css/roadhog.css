@@ -37,6 +37,7 @@
     bottom: 0px;
     min-width: 130px;
     max-width: 220px;
+    z-index: 500;
 }
 
 #roadhogImage

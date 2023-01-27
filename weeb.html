@@ -19,14 +19,23 @@
             </div>
         </div>
 
-        <section class="container-sm my-5">
-            <video id="animeplayer" class="w-100" controls autoplay>
-                <source src="movie.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-            </video> 
-            <button onclick='loadAnimes("Pierknight")'>PROVA</button>
-            <input class="form-control basicAutoComplete" type="text" autocomplete="off">    
-            <button id="skipAnime" onclick="playNextAnime()" disabled="true">SKIP</button>
+        <section class="container-sm my-5 text-center">
+            
+            <section id="hub">
+                <input id="anilistInput" type="text" placeholder="Inserisci anilist username" onkeypress="if(event.key === 'Enter') loadAnimes()">
+                <button onclick='loadAnimes()'>INIZIA</button>
+            </section>
+            <section id="game" class="hide">
+                <section style="position: relative;" onclick="toggleCensor()"">
+                    <div id="banner" style="position: absolute; background-color: black; width: 100%; height: 100%;"></div>
+                    <video id="animeplayer" class="w-100" controls autoplay>
+                        <source src="movie.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                    </video> 
+                </section>
+                <input class="form-control basicAutoComplete" type="text" autocomplete="off">    
+                <button id="skipAnime" onclick="playNextAnime()" disabled="true">SKIP</button>
+            </section>
         </section>
 
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

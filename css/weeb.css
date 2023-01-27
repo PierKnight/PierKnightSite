@@ -3,4 +3,10 @@
     width: 60%;
     height: auto;
     margin: 0px auto;
+    pointer-events: none;
+}
+
+.hide
+{
+    display: none;
 }
