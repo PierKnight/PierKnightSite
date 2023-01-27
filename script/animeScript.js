@@ -21,6 +21,7 @@ const videoPlayerSource = document.querySelector("#animeplayer source");
 let selectedAnimeId = -1;
 const animeList = [];
 let animeIndex = -1;
+let punteggio = 0;
 
 
 videoElement.onloadedmetadata = (event) => {
@@ -32,6 +33,16 @@ function toggleCensor()
   $("#banner").toggleClass("hide");
 }
 
+function stopGame()
+{
+  broadcastMessage(`Hai fatto: ${punteggio} su ${animeIndex + 1}!`, 10000);
+  punteggio = 0;
+  animeIndex = -1;
+  $("section#game").toggleClass("hide");
+  $("section#hub").toggleClass("hide");
+  videoElement.pause();
+}
+
 function playNextAnime()
 {
 
@@ -39,12 +50,18 @@ function playNextAnime()
   {
     console.log("SELECTED: " + selectedAnimeId);
     if(selectedAnimeId === animeList[animeIndex].id)
+    {
+      punteggio = punteggio + 1;
       broadcastMessage("BRAVO HAI AZZECCATO L'anime", 4000);
+    }
     else
       broadcastMessage("NOPE", 4000);
   }
 
   animeIndex = animeIndex + 1;
+
+  if(animeIndex >= animeList.length) return stopGame();
+
   const anime = animeList[animeIndex];
   const song = anime.songs[generateRandomNumber(anime.songs.length)];
   videoPlayerSource.type = song.mimetype;
@@ -63,7 +80,8 @@ videoElement.onended = (event) => {
 
 function populateList(themesJson)
 {
-  animeList.splice(0,animeList.length)
+  animeList.splice(0,animeList.length);
+  selectedAnimeId = -1;
   for(let indexAnime in themesJson.anime)
   {
     const animeID = themesJson.anime[indexAnime].id;
