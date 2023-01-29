@@ -45,7 +45,7 @@
     width: 100%;
     margin: 0px auto;
     display: block;
-    cursor: grab;
+    cursor: pointer;
     filter: drop-shadow(-10px 2px 14px #353535);
 }
 

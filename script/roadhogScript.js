@@ -1,45 +1,36 @@
 
+const SoundType = {
+    Hook: 0,
+    Roadhog: 1,
+    Other: 2
+}
+
 // ------------------------AUDIO SETTING---------------------------
-const audioButton = document.getElementById("audioButton");
-var audioValue = localStorage.getItem("audioSetting");
+let volumes = [];
+for(let s in SoundType)
+{
+    volumes[SoundType[s]] = getOrDefaultStorage("volume" + SoundType[s], 0.7);
+    $("#volume" + SoundType[s]).val(volumes[SoundType[s]]);
+}
 const audioArray = [];
 
-function isAudioOn()
+
+function setSoundVolume(volume, soundType)
 {
-    return audioValue === "on";
+    volume = parseFloat(volume);
+    console.log(volume);
+    localStorage.setItem("volume" + soundType, volume);
+    volumes[soundType] = volume;
+    audioArray.forEach((a) => {if(a.soundType === soundType) a.volume = volume});
 }
 
-function setAudioEnabled(enabled)
+function playAudio(audio, soundType)
 {
-    const enabledS = enabled ? "on" : "off";
-    localStorage.setItem("audioSetting",enabledS);
-    audioValue = enabledS;
-
-    audioArray.forEach((a) => a.muted = !enabled);
-}
-
-if(!audioValue) //se è la prima volta default on
-    setAudioEnabled(true);
-
-if(isAudioOn())
-    audioButton.classList.add("on");
-
-audioButton.addEventListener("click",(event) =>
-{
-    audioButton.classList.toggle("on");
-    setAudioEnabled(!isAudioOn());
-});
-
-
-
-
-
-function playAudio(audio)
-{
-    audio.muted = !isAudioOn();
+    audio.volume = volumes[soundType];
+    audio.soundType = soundType;
     audio.play();
     audioArray.push(audio);
-    audio.addEventListener("ended",(event) => audioArray.filter((a) => a == audio));
+    audio.addEventListener("ended",() => audioArray.filter((a) => a == audio));
     return audio;
 }
 
@@ -53,10 +44,36 @@ function isHookable(element)
 }
 
 
+
+
 //the roadhog image itself
-const roadhogImage = document.getElementById("roadhogImage");
+let roadhogImage;
 //the section with image and audio button
-const roadhogSection = document.querySelector(".roadhogEntitySection");
+let roadhogSection;
+//roadhog talk hander
+let roadhogDialog;
+
+$.get("https://raw.githubusercontent.com/PierKnight/pierknight.github.io/newSite/roadhog.html", (roadhogHtml) => {
+    let roadhogElement = document.createElement("section");
+    roadhogElement.innerHTML = roadhogHtml;
+
+    document.body.appendChild(roadhogElement);
+    roadhogImage = document.getElementById("roadhogImage");
+    roadhogSection = document.querySelector(".roadhogEntitySection");
+    roadhogDialog = document.getElementById("hogDialog");
+    console.log(roadhogSection);
+
+
+    //say random voice
+    roadhogImage.addEventListener("click",(event) =>
+    {
+        jump(); 
+        const audioType = generateRandomNumber(10);
+        const audio = new Audio(`media/hog/shittalking/audio${audioType}.mp3`);
+        playAudio(audio, SoundType.Roadhog);  //play audio audio :E    
+
+    });
+});
 
 //hook handler
 document.addEventListener("mousedown",(event) =>
@@ -64,10 +81,8 @@ document.addEventListener("mousedown",(event) =>
     if(event.target == roadhogImage)
         return;
 
-    
     const hookAudio = new Audio(isHookable(event.target) ? 'media/hog/hook_throw_good.mp3' : 'media/hog/hook_throw.mp3');
-    hookAudio.volume = 0.5;
-    playAudio(hookAudio);
+    playAudio(hookAudio, SoundType.Hook);
 
     const hook = document.createElement("div");
     hook.classList.add("hook");
@@ -133,12 +148,11 @@ document.addEventListener("mousedown",(event) =>
 },false);
 
 
-//roadhog talk hander
-const roadhogDialog = document.getElementById("hogDialog");
 
 
 function jump()
 {
+    if(roadhogImage === undefined) return;
     roadhogImage.classList.remove("hogJumping");   
     roadhogImage.offsetLeft;
     roadhogImage.classList.add("hogJumping");
@@ -148,6 +162,7 @@ function jump()
 let oldMessageInterval;   
 function broadcastMessage(message, time)
 {
+    if(!roadhogDialog) return;
 
     clearTimeout(oldMessageInterval);
     jump();
@@ -178,27 +193,32 @@ broadcastMessage("Benvenuto nella pagina Principale!", 2000);
 
 document.addEventListener("mouseover",(event) =>
 {
-    const message = event.target.getAttribute("hogMessage");
-    if(message)
-        broadcastMessage(message, 2000);
+    const closestMessage = event.target.closest("*[hogMessage]");
+
+    if(closestMessage !== null)
+    {
+        const message = closestMessage.getAttribute("hogMessage");
+        broadcastMessage(message);
+    }
+    else
+        stopMessage();
     
 },false);
 
 
+window.oncontextmenu = function(event) {
+
+    const closestMessage = event.target.closest("*[hogMessage]");
+    if(closestMessage !== null)
+    {
+        const message = closestMessage.getAttribute("hogMessage");
+        if(message)
+            broadcastMessage(message, 1000);
+    }
+    
+    return true;
+};
 
 
-
-//say random voice
-roadhogImage.addEventListener("click",(event) =>
-{
-    roadhogImage.classList.remove("hogJumping");   
-    roadhogImage.offsetLeft; //reflow the image
-    roadhogImage.classList.add("hogJumping");     
-    const audioType = generateRandomNumber(10);
-    const audio = new Audio(`media/hog/shittalking/audio${audioType}.mp3`);
-    audio.volume = 0.7;
-    playAudio(audio);  //play audio audio :E    
-
-});
 
 
