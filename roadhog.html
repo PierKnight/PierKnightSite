@@ -1,0 +1,28 @@
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Options</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <label for="customRange2" class="form-label">hook volume</label>
+            <input type="range" class="form-range" min="0" max="1" step="0.05" id="volume0" oninput="setSoundVolume(value, 0)">
+            <label for="customRange2" class="form-label">roadhog volume</label>
+            <input type="range" class="form-range" min="0" max="1" step="0.05" id="volume1" oninput="setSoundVolume(value, 1)">
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<div id="roadhog" class="unselectable">
+    <div id="hogDialog" class="undraggable"></div>
+    <div class="roadhogEntitySection" style="position: relative">    
+        <span id="audioButton" class="material-symbols-outlined" data-toggle="modal" data-target="#exampleModalLong"></span>
+        <img draggable="false" id="roadhogImage" src="media/hog/normal.gif">
+    </div>
+</div>
