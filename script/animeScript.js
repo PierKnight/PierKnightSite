@@ -64,7 +64,7 @@ function playNextAnime()
 
   const anime = animeList[animeIndex];
   const song = anime.songs[generateRandomNumber(anime.songs.length)];
-  videoPlayerSource.type = "video/webm";#song.mimetype;
+  videoPlayerSource.type = "video/webm"//#song.mimetype;
   videoPlayerSource.src = song.url;
   videoElement.load();  
   if(song.nsfw)
